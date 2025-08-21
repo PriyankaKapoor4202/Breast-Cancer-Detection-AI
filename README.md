@@ -5,8 +5,7 @@ AI and machine learning project leveraging the **CBIS-DDSM mammography dataset**
 ---
 
 ## ❗ Problem Statement
-Breast cancer is a leading cause of cancer-related deaths among women. Early detection via mammography improves outcomes, but manual interpretation is time-consuming and can be inconsistent.  
-This project builds an **ML pipeline to classify mammogram cases (benign vs malignant)** and support faster, more accurate decisions.
+Breast cancer is a leading cause of cancer-related deaths among women. Early detection via mammography improves outcomes, but manual interpretation is time-consuming and can be inconsistent. This project builds an **ML pipeline to classify mammogram cases (benign vs malignant)** and support faster, more accurate decisions.
 
 ---
 
