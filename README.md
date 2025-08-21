@@ -1,55 +1,22 @@
-# 🩺 Breast Cancer Detection using AI
+## 🩺 Breast Cancer Detection using AI  
 
-AI and machine learning project leveraging the **CBIS-DDSM mammography dataset** to enhance early breast cancer detection accuracy and assist radiologists in diagnosis.
+AI and machine learning project leveraging the **CBIS-DDSM mammography dataset** (sourced from Kaggle) to enhance early breast cancer detection accuracy and assist radiologists in diagnosis.  
 
-## 🎯 Objective
-Develop ML models to analyze mammogram metadata and improve diagnostic accuracy for early detection.
+### ❗ Problem Statement  
+Breast cancer is one of the leading causes of cancer-related deaths among women worldwide.  
+Early detection through mammography significantly improves survival rates, but manual interpretation can be time-consuming and prone to errors.  
+This project aims to **develop a machine learning model that automates classification of mammogram images (benign vs malignant)** to support radiologists in making faster and more accurate diagnoses.  
 
-## ❌ Problem
-- High variability in breast cancer diagnoses  
-- Limited radiologists in remote areas  
-- Risk of overdiagnosis/underdiagnosis  
-- Time-consuming manual interpretation  
+### 🎯 Objective  
+- **Automate Detection**: Build ML models to classify mammogram scans into benign or malignant.  
+- **Improve Accuracy**: Reduce false negatives that can delay treatment.  
+- **Data Wrangling & Feature Engineering**: Clean, preprocess, and extract key features from imaging data.  
+- **Model Comparison**: Evaluate Logistic Regression, Decision Tree, and other classifiers for performance.  
+- **Practical Application**: Provide a scalable AI tool to enhance early detection and assist healthcare professionals.  
 
-## ✅ Approach
-- Dataset: CBIS-DDSM (10K+ rows, 52 features)  
-- Preprocessing: handled missing values, feature encoding, normalization  
-- Models: Logistic Regression & Decision Tree  
-- Evaluation Metrics: Accuracy, ROC-AUC, F1-score  
-
-## 📊 Results
-- **Logistic Regression** → Accuracy: 96.44%, ROC-AUC: 85.4%  
-- **Decision Tree** → Accuracy: 96.58%, ROC-AUC: 98.59% (best performer)  
-
-## 🔄 Flowchart
-```mermaid
-flowchart TD
-    A[CBIS-DDSM Dataset] --> B[Preprocessing]
-    B --> C[Feature Engineering]
-    C --> D[Logistic Regression]
-    C --> E[Decision Tree]
-    D --> F[Evaluation]
-    E --> F[Evaluation]
-    F --> G[Insights & Business Impact]
-```
-
-## 🚀 How to Run
-```bash
-# Clone repo
-git clone https://github.com/yourusername/Breast-Cancer-Detection-AI.git
-cd Breast-Cancer-Detection-AI
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Open notebook
-jupyter notebook notebooks/breast_cancer_detection.ipynb
-```
-
-## 📈 Business Impact
-- Supports **early detection** and risk-based screening  
-- Assists radiologists in prioritizing cases  
-- Reduces costs by catching malignancies earlier  
-- Scalable AI solution for healthcare accessibility  
-
----
+### 📊 Dataset Details  
+- **Source**: [CBIS-DDSM on Kaggle](https://www.kaggle.com/datasets/skooch/ddsm-mammography)  
+- **Type**: Curated mammography images with annotations.  
+- **Size**: Thousands of labeled samples (benign, malignant).  
+- **Features**: Includes breast density, pathology labels, ROI images.  
+- **Purpose**: Benchmark dataset widely used for research in breast cancer detection and medical AI.  
