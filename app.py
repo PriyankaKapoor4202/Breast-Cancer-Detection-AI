@@ -27,7 +27,7 @@ st.markdown("""
 
 #MainMenu, footer, header { visibility: hidden; }
 
-.stApp {
+.stSlider label { color: #0a1f3c !important; font-size: 0.78rem !important; font-weight: 600 !important; } .stApp {
     background-color: #f0f3f7;
 }
 
@@ -710,3 +710,5 @@ st.markdown("""
     For Research & Educational Use Only
 </div>
 """, unsafe_allow_html=True)
+
+# CSS fix appended
