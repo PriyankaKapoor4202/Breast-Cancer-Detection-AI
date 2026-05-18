@@ -115,3 +115,11 @@ Breast-Cancer-Detection-AI/
 
 ## 🔖 License
 This project is released under the **MIT License** (see `LICENSE`).
+
+
+## Version 2 Enhancements
+Added ensemble models for improved performance:
+- Random Forest: 96.49% accuracy
+- XGBoost: 95.61% accuracy
+- Interactive Streamlit diagnostic app (app.py)
+
