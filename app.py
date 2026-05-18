@@ -449,11 +449,11 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    mean_radius = st.slider("Mean Radius (mm)", 6.0, 30.0, 14.0, step=0.1)
-    mean_texture = st.slider("Mean Texture", 9.0, 40.0, 19.0, step=0.1)
-    mean_perimeter = st.slider("Mean Perimeter (mm)", 40.0, 200.0, 92.0, step=0.5)
-    mean_area = st.slider("Mean Area (mm²)", 140.0, 2600.0, 654.0, step=5.0)
-    mean_smoothness = st.slider("Mean Smoothness", 0.050, 0.170, 0.096, step=0.001, format="%.3f")
+    mean_radius = st.slider("Radius", 6.0, 30.0, 14.0, step=0.1)
+    mean_texture = st.slider("Texture", 9.0, 40.0, 19.0, step=0.1)
+    mean_perimeter = st.slider("Perimeter", 40.0, 200.0, 92.0, step=0.5)
+    mean_area = st.slider("Area", 140.0, 2600.0, 654.0, step=5.0)
+    mean_smoothness = st.slider("Smoothness", 0.050, 0.170, 0.096, step=0.001, format="%.3f")
 
     st.markdown("---")
     model_choice = st.selectbox("Algorithm",
