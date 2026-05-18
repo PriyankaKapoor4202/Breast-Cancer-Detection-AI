@@ -4,47 +4,84 @@ import numpy as np
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score
 from xgboost import XGBClassifier
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 
 st.set_page_config(
     page_title="Breast Cancer Detection AI",
     page_icon="🏥",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 st.markdown("""
 <style>
-    .main { background-color: #f0f4f8; }
-    .stApp { background-color: #f0f4f8; }
-    h1 { color: #1a3a5c; font-family: 'Georgia', serif; }
-    h2, h3 { color: #1a3a5c; }
-    .metric-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    body { background-color: #ffffff; }
+    .stApp { background-color: #ffffff; }
+    .main .block-container { padding: 2rem 3rem; }
+    h1 { color: #0d3362 !important; font-size: 2.2rem !important; font-weight: 700 !important; }
+    h2 { color: #0d3362 !important; font-size: 1.4rem !important; }
+    h3 { color: #0d3362 !important; font-size: 1.1rem !important; }
+    p { color: #333333 !important; }
+    .metric-box {
+        background: #ffffff;
+        border: 1.5px solid #d0dce8;
+        border-radius: 12px;
+        padding: 24px 16px;
         text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
-    .prediction-benign {
-        background-color: #e8f5e9;
-        border-left: 6px solid #2e7d32;
-        padding: 20px;
-        border-radius: 8px;
-        font-size: 1.3em;
-        color: #2e7d32;
-        font-weight: bold;
+    .metric-box .metric-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0d3362;
     }
-    .prediction-malignant {
-        background-color: #ffebee;
-        border-left: 6px solid #c62828;
-        padding: 20px;
-        border-radius: 8px;
-        font-size: 1.3em;
-        color: #c62828;
-        font-weight: bold;
+    .metric-box .metric-label {
+        font-size: 0.85rem;
+        color: #555555;
+        margin-top: 4px;
     }
+    .benign-box {
+        background: #f0faf0;
+        border: 2px solid #2e7d32;
+        border-radius: 10px;
+        padding: 18px 22px;
+        color: #1b5e20;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    .malignant-box {
+        background: #fff5f5;
+        border: 2px solid #c62828;
+        border-radius: 10px;
+        padding: 18px 22px;
+        color: #b71c1c;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    .section-divider {
+        border: none;
+        border-top: 1.5px solid #e0e8f0;
+        margin: 2rem 0;
+    }
+    .info-box {
+        background: #f4f8fc;
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #333333;
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+    [data-testid="stSidebar"] {
+        background-color: #f4f8fc;
+    }
+    [data-testid="stSidebar"] h2 {
+        color: #0d3362 !important;
+    }
+    label { color: #333333 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -54,121 +91,121 @@ def load_and_train():
     X = pd.DataFrame(data.data, columns=data.feature_names)
     y = pd.Series(data.target)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
     rf.fit(X_train, y_train)
-    
     xgb = XGBClassifier(random_state=42, eval_metric='logloss')
     xgb.fit(X_train, y_train)
-    
-    return rf, xgb, X_test, y_test, data
+    return rf, xgb, X_test, y_test, data, X
 
-rf, xgb, X_test, y_test, data = load_and_train()
+rf, xgb, X_test, y_test, data, X_full = load_and_train()
 
 st.markdown("# 🏥 Breast Cancer Detection AI")
-st.markdown("### Early detection support tool using ensemble machine learning")
-st.markdown("---")
+st.markdown("**Early detection support tool using ensemble machine learning — Wisconsin Breast Cancer Dataset**")
+st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.markdown("""<div class='metric-card'>
-        <h2 style='color:#1a3a5c'>96.49%</h2>
-        <p>Random Forest Accuracy</p>
-    </div>""", unsafe_allow_html=True)
-with col2:
-    st.markdown("""<div class='metric-card'>
-        <h2 style='color:#1a3a5c'>95.61%</h2>
-        <p>XGBoost Accuracy</p>
-    </div>""", unsafe_allow_html=True)
-with col3:
-    st.markdown("""<div class='metric-card'>
-        <h2 style='color:#1a3a5c'>569</h2>
-        <p>Patient Records Analyzed</p>
-    </div>""", unsafe_allow_html=True)
+c1, c2, c3, c4 = st.columns(4)
+metrics = [
+    ("96.49%", "Random Forest Accuracy"),
+    ("95.61%", "XGBoost Accuracy"),
+    ("569", "Patient Records"),
+    ("30", "Clinical Features"),
+]
+for col, (val, label) in zip([c1, c2, c3, c4], metrics):
+    with col:
+        st.markdown(f"""
+        <div class='metric-box'>
+            <div class='metric-value'>{val}</div>
+            <div class='metric-label'>{label}</div>
+        </div>""", unsafe_allow_html=True)
 
-st.markdown("---")
-left, right = st.columns([1, 1])
+st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
-with left:
-    st.markdown("### 🔬 Patient Feature Input")
-    st.markdown("Adjust the sliders to match patient measurements:")
-    
-    mean_radius = st.slider("Mean Radius", 6.0, 30.0, 14.0, help="Mean of distances from center to perimeter")
-    mean_texture = st.slider("Mean Texture", 9.0, 40.0, 19.0, help="Standard deviation of gray-scale values")
+with st.sidebar:
+    st.markdown("## 🔬 Patient Inputs")
+    st.markdown("Adjust values to match patient measurements:")
+    mean_radius = st.slider("Mean Radius", 6.0, 30.0, 14.0)
+    mean_texture = st.slider("Mean Texture", 9.0, 40.0, 19.0)
     mean_perimeter = st.slider("Mean Perimeter", 40.0, 200.0, 92.0)
     mean_area = st.slider("Mean Area", 140.0, 2600.0, 654.0)
-    mean_smoothness = st.slider("Mean Smoothness", 0.05, 0.17, 0.096, format="%.3f")
-    
-    model_choice = st.selectbox("Select Model", ["Random Forest", "XGBoost", "Both (Ensemble)"])
+    mean_smoothness = st.slider("Mean Smoothness", 0.050, 0.170, 0.096, step=0.001, format="%.3f")
+    st.markdown("---")
+    model_choice = st.selectbox("Model", ["Random Forest", "XGBoost", "Ensemble (Both)"])
 
-with right:
+left, right = st.columns([1, 1], gap="large")
+
+with left:
     st.markdown("### 📊 Prediction Result")
-    
-    X_sample = pd.DataFrame([pd.DataFrame(data.data, columns=data.feature_names).mean().values],
-                            columns=data.feature_names)
+    X_sample = pd.DataFrame([X_full.mean().values], columns=data.feature_names)
     X_sample['mean radius'] = mean_radius
     X_sample['mean texture'] = mean_texture
     X_sample['mean perimeter'] = mean_perimeter
     X_sample['mean area'] = mean_area
     X_sample['mean smoothness'] = mean_smoothness
-    
+
     if model_choice == "Random Forest":
-        pred = rf.predict(X_sample)[0]
         prob = rf.predict_proba(X_sample)[0]
     elif model_choice == "XGBoost":
-        pred = xgb.predict(X_sample)[0]
         prob = xgb.predict_proba(X_sample)[0]
     else:
-        rf_pred = rf.predict_proba(X_sample)[0]
-        xgb_pred = xgb.predict_proba(X_sample)[0]
-        prob = (rf_pred + xgb_pred) / 2
-        pred = 1 if prob[1] > 0.5 else 0
-    
-    if pred == 1:
-        st.markdown("<div class='prediction-benign'>✅ Benign — Low Risk Detected</div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div class='prediction-malignant'>⚠️ Malignant — High Risk Detected</div>", unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
+        prob = (rf.predict_proba(X_sample)[0] + xgb.predict_proba(X_sample)[0]) / 2
+
+    pred = 1 if prob[1] > 0.5 else 0
     confidence = max(prob) * 100
-    st.metric("Model Confidence", f"{confidence:.1f}%")
-    
+
+    if pred == 1:
+        st.markdown("<div class='benign-box'>✅ Result: <strong>Benign</strong> — Low malignancy risk detected</div>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='malignant-box'>⚠️ Result: <strong>Malignant</strong> — High malignancy risk detected</div>", unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.metric("Confidence Score", f"{confidence:.1f}%")
+
     fig, ax = plt.subplots(figsize=(5, 3))
-    ax.bar(['Benign', 'Malignant'], [prob[1]*100, prob[0]*100],
-           color=['#2e7d32', '#c62828'], alpha=0.8)
-    ax.set_ylabel('Probability (%)')
-    ax.set_title('Prediction Probability')
-    ax.set_facecolor('#f0f4f8')
-    fig.patch.set_facecolor('#f0f4f8')
+    bars = ax.bar(['Benign', 'Malignant'], [prob[1]*100, prob[0]*100],
+                  color=['#2e7d32', '#c62828'], alpha=0.85, width=0.5)
+    ax.set_ylim(0, 110)
+    ax.set_ylabel('Probability (%)', color='#333333', fontsize=11)
+    ax.set_title('Prediction Probability Breakdown', color='#0d3362', fontsize=12, fontweight='bold')
+    for bar, val in zip(bars, [prob[1]*100, prob[0]*100]):
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 2,
+                f'{val:.1f}%', ha='center', va='bottom', color='#333333', fontsize=11)
+    ax.set_facecolor('#ffffff')
+    fig.patch.set_facecolor('#ffffff')
+    ax.tick_params(colors='#333333')
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
     st.pyplot(fig)
 
-st.markdown("---")
-st.markdown("### 🔍 Feature Importance (Random Forest)")
-importances = pd.Series(rf.feature_importances_, index=data.feature_names).sort_values(ascending=False)[:10]
-fig2, ax2 = plt.subplots(figsize=(10, 4))
-importances.plot(kind='bar', ax=ax2, color='#1a3a5c', alpha=0.85)
-ax2.set_title('Top 10 Most Important Features')
-ax2.set_facecolor('#f0f4f8')
-fig2.patch.set_facecolor('#f0f4f8')
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-st.pyplot(fig2)
+with right:
+    st.markdown("### 🔍 Top 10 Feature Importances")
+    importances = pd.Series(rf.feature_importances_, index=data.feature_names).sort_values(ascending=True)[-10:]
+    fig2, ax2 = plt.subplots(figsize=(6, 4))
+    importances.plot(kind='barh', ax=ax2, color='#0d3362', alpha=0.82)
+    ax2.set_title('Most Influential Clinical Features', color='#0d3362', fontsize=12, fontweight='bold')
+    ax2.set_facecolor('#ffffff')
+    fig2.patch.set_facecolor('#ffffff')
+    ax2.tick_params(colors='#333333', labelsize=9)
+    ax2.set_xlabel('Importance Score', color='#333333')
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
+    plt.tight_layout()
+    st.pyplot(fig2)
 
-st.markdown("---")
-st.markdown("### ℹ️ How It Works")
+st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
+st.markdown("### ℹ️ About the Models")
 col1, col2 = st.columns(2)
 with col1:
-    st.markdown("""
-    **Random Forest** trains 100 decision trees on different subsets of the data 
-    and combines their predictions. It is highly robust to overfitting and works 
-    well with medical data.
-    """)
+    st.markdown("""<div class='info-box'>
+    <strong>🌲 Random Forest (96.49% accuracy)</strong><br>
+    Trains 100 decision trees on random subsets of patient data and combines their votes. 
+    Highly robust to noise and missing values — ideal for clinical datasets.
+    </div>""", unsafe_allow_html=True)
 with col2:
-    st.markdown("""
-    **XGBoost** uses gradient boosting to sequentially build trees that correct 
-    previous errors. It is one of the most powerful algorithms for structured 
-    healthcare data.
-    """)
+    st.markdown("""<div class='info-box'>
+    <strong>⚡ XGBoost (95.61% accuracy)</strong><br>
+    Uses gradient boosting to sequentially correct prediction errors. 
+    One of the most powerful algorithms for structured healthcare tabular data.
+    </div>""", unsafe_allow_html=True)
 
-st.markdown("---")
-st.caption("Built by Priyanka Kapoor | MS Business Analytics, Montclair State University | github.com/PriyankaKapoor4202")
+st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
+st.markdown("<p style='color:#888; font-size:0.85rem; text-align:center'>Built by <strong>Priyanka Kapoor</strong> | MS Business Analytics, Montclair State University 2026 | <a href='https://github.com/PriyankaKapoor4202' style='color:#0d3362'>GitHub</a></p>", unsafe_allow_html=True)
