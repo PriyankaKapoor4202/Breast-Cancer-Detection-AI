@@ -12,7 +12,7 @@ matplotlib.use('Agg')
 import datetime
 
 st.set_page_config(
-    page_title="OncoDetect Clinical AI | Breast Cancer Screening",
+    page_title="MedScan AI | Breast Cancer Screening",
     page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded"
@@ -507,8 +507,8 @@ st.markdown(f"""
     <div class="header-left">
         <div class="header-logo">O</div>
         <div>
-            <div class="header-name">OncoDetect Clinical AI</div>
-            <div class="header-dept">Department of Oncology &amp; Diagnostic Informatics</div>
+            <div class="header-name">MedScan AI</div>
+            <div class="header-dept">Oncology & Diagnostic Informatics Division</div>
         </div>
     </div>
     <div class="header-right">
@@ -557,10 +557,10 @@ st.markdown("""
     <div class="breadcrumb">
         <span class="breadcrumb-link">Oncology</span> / 
         <span class="breadcrumb-link">Screening</span> / 
-        Breast Cancer Diagnostic Tool
+        Breast Cancer Malignancy Screening
     </div>
-    <div class="page-title">Breast Cancer Diagnostic Tool</div>
-    <div class="page-desc">AI-assisted malignancy screening — Wisconsin Breast Cancer Dataset — For research and educational use only</div>
+    <div class="page-title">Breast Cancer Malignancy Screening</div>
+    <div class="page-desc">AI-assisted malignancy risk screening using ensemble machine learning | Wisconsin Breast Cancer Dataset | For research use only</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -791,7 +791,7 @@ with right:
 
 st.markdown(f"""
 <div class="app-footer">
-    <strong>OncoDetect Clinical AI</strong> &nbsp;|&nbsp; Version 2.1.0 &nbsp;|&nbsp;
+    <strong>MedScan AI</strong> &nbsp;|&nbsp; Version 2.1.0 &nbsp;|&nbsp;
     Developed by <strong>Priyanka Kapoor</strong> &nbsp;|&nbsp;
     MS Business Analytics, Montclair State University 2026 &nbsp;|&nbsp;
     <a href="https://github.com/PriyankaKapoor4202/Breast-Cancer-Detection-AI">GitHub Repository</a> &nbsp;|&nbsp;
